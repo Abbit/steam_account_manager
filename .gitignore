@@ -1,0 +1,13 @@
+# Ingore cache
+src\__pycache__
+
+# Igrone settings files
+*.json
+*.cfg
+
+# Ingore tasks files
+*.todo
+
+#Ingone build files
+build\**
+!build\Steam Acc Manager.exe

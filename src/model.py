@@ -4,6 +4,7 @@ import time
 import subprocess
 import json
 import configparser
+import base64
 
 PROCESS_NAME = "Steam.exe"
 DEFAULT_STEAM_PATH = 'C:\Program Files (x86)\Steam\Steam.exe'
@@ -55,7 +56,7 @@ def add_acc(user_login, user_pass):
     else:
         account = {user_login: {
             'login': user_login,
-            'password': user_pass
+            'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8')
         }
         }
         check_json()
@@ -72,7 +73,7 @@ def login(account):
         process_pid = process[0]
         kill_process(process_pid)
         time.sleep(1)
-    start_process(account['login'], account['password'])
+    start_process(account['login'], base64.b64decode(account['password']).decode('utf-8'))
 
 
 def get_steam_path():

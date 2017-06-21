@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>260</width>
+    <height>96</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>260</width>
+    <height>96</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Настройки</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:  rgb(24, 24, 24);</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="styleSheet">
+      <string notr="true">background-color:  rgb(24, 24, 24);</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="selectPathButton">
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(66, 66, 66);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Установить путь до Steam</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="backButton">
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(66, 66, 66);
+color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Назад</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>backButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>118</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>129</x>
+     <y>89</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,5 +1,6 @@
 # Ingore cache
 src/__pycache__/
+src/view/__pycache__/
 
 # Igrone settings files
 *.json

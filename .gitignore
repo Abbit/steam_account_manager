@@ -8,3 +8,6 @@ src/view/__pycache__/
 
 # Ingore tasks files
 *.todo
+
+# Ignore idea
+.idea/

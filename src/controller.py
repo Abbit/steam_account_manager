@@ -12,11 +12,9 @@ def show_choice_acc_dialog():
     ui.listWidget.addItems(accounts)
     ui.listWidget.itemDoubleClicked.connect(lambda: model.login(accounts[ui.listWidget.currentItem().text()]))
     ui.listWidget.itemDoubleClicked.connect(dialog.close)
-    ui.listWidget.setFixedHeight(model.autoheight())
     ui.choiceAccButton.clicked.connect(lambda: model.login(accounts[ui.listWidget.currentItem().text()]))
     ui.deleteButton.clicked.connect(lambda: model.delete_acc(ui.listWidget.currentItem().text()))
     ui.deleteButton.clicked.connect(lambda: ui.listWidget.takeItem(ui.listWidget.currentRow()))
-    dialog.setFixedHeight(model.autoheight() + 100)
     dialog.exec_()
 
 
@@ -24,7 +22,9 @@ def show_create_acc_dialog():
     dialog = QtWidgets.QDialog()
     ui = addacc_dialog.Ui_Dialog()
     ui.setupUi(dialog)
-    ui.pushButton.clicked.connect(lambda: model.add_acc(ui.login_lineEdit.text(), ui.passwrd_lineEdit.text()))
+    ui.pushButton.clicked.connect(lambda: model.add_acc(ui.login_lineEdit.text(),
+                                                        ui.passwrd_lineEdit.text(),
+                                                        ui.steamlink_lineEdit.text()))
     ui.pushButton.clicked.connect(dialog.close)
     dialog.exec_()
 

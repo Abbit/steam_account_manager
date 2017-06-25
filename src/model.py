@@ -5,6 +5,8 @@ import subprocess
 import json
 import configparser
 import base64
+import requests
+from bs4 import BeautifulSoup
 
 PROCESS_NAME = "Steam.exe"
 DEFAULT_STEAM_PATH = 'C:\Program Files (x86)\Steam\Steam.exe'
@@ -50,15 +52,24 @@ def read_accs():
     return accs
 
 
-def add_acc(user_login, user_pass):
+def add_acc(user_login, user_pass, user_steamlink):
     if (user_login is None) or (user_pass is None):
         return False
     else:
-        account = {user_login: {
-            'login': user_login,
-            'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8')
-        }
-        }
+        if user_steamlink is not '':
+            account = {get_nickname(user_steamlink): {
+                'login': user_login,
+                'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8'),
+                'steamlink': user_steamlink
+                }
+            }
+        else:
+            account = {user_login: {
+                'login': user_login,
+                'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8'),
+                'steamlink': user_steamlink
+                }
+            }
         check_json()
         accs = read_accs()
         accs.update(account)
@@ -91,13 +102,16 @@ def set_steam_path(steam_path):
         cfg.write(config)
 
 
-def autoheight():
-    accs = read_accs()
-    return len(accs)*32+60
-
-
 def delete_acc(key):
     accs = read_accs()
     del accs[key]
     with open('accounts.json', 'w', encoding='utf-8') as accs_j:
         json.dump(accs, accs_j, indent=2, ensure_ascii=False)
+
+
+def get_nickname(url):
+    r = requests.get(url)
+    html = r.text
+    soup = BeautifulSoup(html, 'lxml')
+    nickname = soup.find('span', class_="actual_persona_name").text
+    return nickname

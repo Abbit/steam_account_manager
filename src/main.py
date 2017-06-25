@@ -1,4 +1,5 @@
 import sys
+import traceback
 
 import controller
 from view.main_window import *
@@ -14,7 +15,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.new_acc_btn.clicked.connect(controller.show_create_acc_dialog)
         self.ui.settings_btn.clicked.connect(controller.show_setting_dialog)
 
+
+# Функия вывода исключений
+def exception_hook(type_, value, tb):
+    logger.error('Unhandled top level exception:\n%s', ''.join(traceback.format_exception(type_, value, tb)))
+
+
 if __name__ == "__main__":
+    sys.excepthook = exception_hook
     # create application
     app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName('Steam Acc Manager')

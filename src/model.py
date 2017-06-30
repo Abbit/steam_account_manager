@@ -7,9 +7,12 @@ import configparser
 import base64
 import requests
 from bs4 import BeautifulSoup
+from PIL import Image
 
-PROCESS_NAME = "Steam.exe"
+
+PROCESS_NAME = 'Steam.exe'
 DEFAULT_STEAM_PATH = 'C:\Program Files (x86)\Steam\Steam.exe'
+STEAM_DEFAUL_AVATAR_URL = 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg'
 
 
 # Находим процесс steam'а
@@ -29,6 +32,11 @@ def kill_process(pid):
 def start_process(login, passwrd):
     p = subprocess.Popen(get_steam_path() + ' ' + '-login' +
                          ' ' + login + ' ' + passwrd)
+
+
+def check_avatars_dir():
+    if not os.path.exists('avatars/'):
+        os.mkdir('avatars')
 
 
 def check_json():
@@ -113,5 +121,39 @@ def get_nickname(url):
     r = requests.get(url)
     html = r.text
     soup = BeautifulSoup(html, 'lxml')
-    nickname = soup.find('span', class_="actual_persona_name").text
+    nickname = soup.find('span', class_='actual_persona_name').text
     return nickname
+
+
+def get_default_avatar():
+    p = requests.get(STEAM_DEFAUL_AVATAR_URL)
+    check_avatars_dir()
+    image_name = 'avatars/' + 'default' + '.jpg'
+    out = open(image_name, "wb")
+    out.write(p.content)
+    out.close()
+    resize_image(image_name)
+    return image_name
+
+
+def get_avatar(url):
+    r = requests.get(url)
+    html = r.text
+    soup = BeautifulSoup(html, 'lxml')
+    imagelink = soup.find('div', class_='playerAvatarAutoSizeInner').find('img')['src']
+    p = requests.get(imagelink)
+    check_avatars_dir()
+    image_name = 'avatars/' + get_nickname(url) + '.jpg'
+    out = open(image_name, "wb")
+    out.write(p.content)
+    out.close()
+    resize_image(image_name)
+    return image_name
+
+
+def resize_image(imagename):
+    img = Image.open(imagename)
+    width = 64
+    height = 64
+    resized_img = img.resize((width, height), Image.ANTIALIAS)
+    resized_img.save(imagename)

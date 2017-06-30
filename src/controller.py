@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 
 import model
 from view import addacc_dialog, choice_acc_dialog, settings_dialog
@@ -8,11 +8,24 @@ def show_choice_acc_dialog():
     dialog = QtWidgets.QDialog()
     ui = choice_acc_dialog.Ui_Dialog()
     ui.setupUi(dialog)
+
     accounts = model.read_accs()
-    ui.listWidget.addItems(accounts)
+    for account in accounts:
+        item = QtWidgets.QListWidgetItem(account)
+        icon = QtGui.QIcon()
+        if accounts[account]['steamlink'] is not "":
+            icon.addFile(model.get_avatar(accounts[account]['steamlink']))
+            item.setIcon(icon)
+        else:
+            icon.addFile(model.get_default_avatar())
+            item.setIcon(icon)
+        ui.listWidget.addItem(item)
+
+    ui.listWidget.setIconSize(QtCore.QSize(64, 64))
     ui.listWidget.itemDoubleClicked.connect(lambda: model.login(accounts[ui.listWidget.currentItem().text()]))
     ui.listWidget.itemDoubleClicked.connect(dialog.close)
     ui.choiceAccButton.clicked.connect(lambda: model.login(accounts[ui.listWidget.currentItem().text()]))
+    ui.choiceAccButton.clicked.connect(dialog.close)
     ui.deleteButton.clicked.connect(lambda: model.delete_acc(ui.listWidget.currentItem().text()))
     ui.deleteButton.clicked.connect(lambda: ui.listWidget.takeItem(ui.listWidget.currentRow()))
     dialog.exec_()

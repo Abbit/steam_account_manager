@@ -1,6 +1,6 @@
 # Ingore cache
 src/__pycache__/
-src/view/__pycache__/
+src/View/__pycache__/
 
 # Igrone settings files
 *.json
@@ -11,3 +11,6 @@ src/view/__pycache__/
 
 # Ignore idea
 .idea/
+
+# Ignore avatars
+/src/avatars/

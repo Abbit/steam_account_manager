@@ -86,7 +86,7 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="new_acc_btn">
+     <widget class="QPushButton" name="add_acc_btn">
       <property name="font">
        <font>
         <family>Roboto Condensed</family>

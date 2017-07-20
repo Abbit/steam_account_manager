@@ -1,6 +1,12 @@
 # Ingore cache
 src/__pycache__/
-src/View/__pycache__/
+src/view/__pycache__/
+src/applogic/__pycache__/
+src/controller/__pycache__/
+src/models/__pycache__/
+src/view/ui/__pycache__/
+src/view/ui/gen/__pycache__/
+
 
 # Igrone settings files
 *.json
@@ -14,3 +20,8 @@ src/View/__pycache__/
 
 # Ignore avatars
 /src/avatars/
+
+/venv/
+
+/old/
+

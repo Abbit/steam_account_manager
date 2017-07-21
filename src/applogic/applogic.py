@@ -8,6 +8,7 @@ import base64
 import requests
 from bs4 import BeautifulSoup
 from PIL import Image
+from models.sam_account_model import SAMAccountModel
 
 PROCESS_NAME = 'Steam.exe'
 DEFAULT_STEAM_PATH = 'C:\Program Files (x86)\Steam\Steam.exe'
@@ -54,41 +55,56 @@ class AppLogic:
             try:
                 accs = json.load(accs_j)
             except Exception as e:
-                accs = {}
+                accs = []
         return accs
 
+    def take_accs(self):
+        accs = self.read_accs()
+        sam_accounts = []
+        for acc in accs:
+            login = acc['login']
+            password = acc['password']
+            try:
+                nickname = acc['nickname']
+            except Exception as e:
+                nickname = None
+            sam_account = SAMAccountModel(login, password, nickname=nickname)
+            sam_accounts.append(sam_account)
+        return sam_accounts
+
     def add_acc(self, user_login, user_pass, user_steamlink):
-        if (user_login is None) or (user_pass is None):
+        if (user_login is '') or (user_pass is ''):
             return False
         else:
             if user_steamlink is not '':
-                account = {self.get_nickname(user_steamlink): {
+                account = {
                     'login': user_login,
                     'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8'),
-                    'steamlink': user_steamlink
-                }
+                    'steamlink': user_steamlink,
+                    'nickname': self.get_nickname(user_steamlink)
                 }
             else:
-                account = {user_login: {
+                account = {
                     'login': user_login,
                     'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8'),
-                    'steamlink': user_steamlink
-                }
+                    'steamlink': user_steamlink,
+                    'nickname': None
                 }
                 self.check_json()
             accs = self.read_accs()
-            accs.update(account)
+            accs.append(account)
             with open('accounts.json', 'w', encoding='utf-8') as accs_j:
                 json.dump(accs, accs_j, indent=2, ensure_ascii=False)
                 return True
 
-    def login(self, account):
+    def login(self, key):
+        account = self.find_acc(key)
         process = self.get_process()
         if process is not None:
             process_pid = process[0]
             self.kill_process(process_pid)
             time.sleep(1)
-            self.start_process(account['login'], base64.b64decode(account['password']).decode('utf-8'))
+        self.start_process(account['login'], base64.b64decode(account['password']).decode('utf-8'))
 
     def get_steam_path(self):
         self.check_cfg()
@@ -105,9 +121,16 @@ class AppLogic:
 
     def delete_acc(self, key):
         accs = self.read_accs()
-        del accs[key]
+        accs.remove(self.find_acc(key))
         with open('accounts.json', 'w', encoding='utf-8') as accs_j:
             json.dump(accs, accs_j, indent=2, ensure_ascii=False)
+
+    def find_acc(self, key):
+        accs = self.read_accs()
+        for acc in accs:
+            if key in acc.values():
+                return acc
+        return None
 
     def get_nickname(self, url):
         r = requests.get(url)

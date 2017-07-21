@@ -1,2 +1,2 @@
 # Steam_Acc_Manager
-Steam Account Manager written in Python
+Steam Account Manager written in Python with PyQt5

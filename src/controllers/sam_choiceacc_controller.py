@@ -7,31 +7,22 @@ from models.sam_account_model import SAMAccountModel
 class SAMChoiceaccController:
     def __init__(self):
         self.applogic = AppLogic()
-        self.model = AccountListModel(self.takeAccs())
+        self.model = AccountListModel(self.applogic.take_accs())
         self.view = ChoiceAccView(self.model)
         self.view.show()
 
-        self.fillView()
-
         self.view.ui.choiceAccButton.clicked.connect(self.ChoiceBtnIsClicked)
+        self.view.ui.listView.doubleClicked.connect(self.ChoiceBtnIsClicked)
         self.view.ui.deleteButton.clicked.connect(self.DeleteBtnIsClicked)
 
     def ChoiceBtnIsClicked(self):
-        pass
+        data = self.view.ui.listView.selectedIndexes()[0].data()
+        self.applogic.login(data)
+        self.view.close()
 
     def DeleteBtnIsClicked(self):
-        pass
-
-    def fillView(self):
-        pass
-
-    def takeAccs(self):
-        sam_accounts = []
-        accs = self.applogic.read_accs()
-        for acc in accs:
-            login = accs[acc]['login']
-            password = accs[acc]['password']
-            nickname = acc
-            sam_account = SAMAccountModel(login, password, nickname=nickname)
-            sam_accounts.append(sam_account)
-        return sam_accounts
+        qmodelindex = self.view.ui.listView.selectedIndexes()[0]
+        index = qmodelindex.row()
+        data = qmodelindex.data()
+        self.applogic.delete_acc(data)
+        self.model.removeRows(index)

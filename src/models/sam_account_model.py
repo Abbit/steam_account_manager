@@ -1,5 +1,5 @@
 class SAMAccountModel(object):
-    def __init__(self, login, password, nickname=None, steamlink=None, description=None):
+    def __init__(self, login, password, steamlink=None, nickname=None, description=None):
         self._login = login
         self._password = password
         self._steamlink = steamlink

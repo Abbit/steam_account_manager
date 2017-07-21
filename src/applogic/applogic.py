@@ -97,14 +97,18 @@ class AppLogic:
                 json.dump(accs, accs_j, indent=2, ensure_ascii=False)
                 return True
 
-    def login(self, key):
-        account = self.find_acc(key)
-        process = self.get_process()
-        if process is not None:
-            process_pid = process[0]
-            self.kill_process(process_pid)
-            time.sleep(1)
-        self.start_process(account['login'], base64.b64decode(account['password']).decode('utf-8'))
+    def delete_acc(self, key):
+        accs = self.read_accs()
+        accs.remove(self.find_acc(key))
+        with open('accounts.json', 'w', encoding='utf-8') as accs_j:
+            json.dump(accs, accs_j, indent=2, ensure_ascii=False)
+
+    def find_acc(self, key):
+        accs = self.read_accs()
+        for acc in accs:
+            if key in acc.values():
+                return acc
+        return None
 
     def get_steam_path(self):
         self.check_cfg()
@@ -118,19 +122,6 @@ class AppLogic:
         cfg.set('PATH', 'steam_path', steam_path)
         with open('settings.cfg', 'w', encoding='utf-8') as config:
             cfg.write(config)
-
-    def delete_acc(self, key):
-        accs = self.read_accs()
-        accs.remove(self.find_acc(key))
-        with open('accounts.json', 'w', encoding='utf-8') as accs_j:
-            json.dump(accs, accs_j, indent=2, ensure_ascii=False)
-
-    def find_acc(self, key):
-        accs = self.read_accs()
-        for acc in accs:
-            if key in acc.values():
-                return acc
-        return None
 
     def get_nickname(self, url):
         r = requests.get(url)
@@ -169,3 +160,12 @@ class AppLogic:
         height = 64
         resized_img = img.resize((width, height), Image.ANTIALIAS)
         resized_img.save(imagename)
+
+    def login(self, key):
+        account = self.find_acc(key)
+        process = self.get_process()
+        if process is not None:
+            process_pid = process[0]
+            self.kill_process(process_pid)
+            time.sleep(1)
+        self.start_process(account['login'], base64.b64decode(account['password']).decode('utf-8'))

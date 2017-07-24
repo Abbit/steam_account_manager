@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Подтверждение действий</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color:  rgb(24, 24, 24);</string>

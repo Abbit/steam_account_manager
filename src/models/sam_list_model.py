@@ -1,4 +1,4 @@
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 
 
 class AccountListModel(QtCore.QAbstractListModel):
@@ -13,13 +13,14 @@ class AccountListModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.ToolTipRole:
             return self.__accounts[index.row()].description
 
-        # if role == QtCore.Qt.DecorationRole:
-        #     row = index.row()
-        #     icon = QtGui.QIcon()
-        #     if self.__accounts[row].steamlink is not "":
-        #         icon.addFile(models.get_avatar(self.__accounts[row].steamlink))
-        #     else:
-        #         icon.addFile(models.get_default_avatar())
+        if role == QtCore.Qt.DecorationRole:
+            row = index.row()
+            icon = QtGui.QIcon()
+            if self.__accounts[row].steamlink is not None:
+                icon.addFile('avatars/' + self.__accounts[row].login + '.jpg')
+            else:
+                icon.addFile('avatars/' + 'default' + '.jpg')
+            return icon
 
         if role == QtCore.Qt.DisplayRole:
             row = index.row()

@@ -14,13 +14,13 @@ class SAMMainController:
        self.view.ui.settings_btn.clicked.connect(self.settingsBtnIsClicked)
 
     def choiceaccBtnIsClicked(self):
-        choiceaccController = SAMChoiceaccController()
-        choiceaccController.view.exec_()
+        choiceacc_controller = SAMChoiceaccController()
+        choiceacc_controller.view.exec_()
 
     def addaccBtnIsClicked(self):
-        addaccController = SAMAddaccController()
-        addaccController.view.exec_()
+        addacc_controller = SAMAddaccController()
+        addacc_controller.view.exec_()
 
     def settingsBtnIsClicked(self):
-        settingsController = SAMSettingsController()
-        settingsController.view.exec_()
+        settings_controller = SAMSettingsController()
+        settings_controller.view.exec_()

@@ -2,18 +2,13 @@ import os
 import psutil
 import time
 import subprocess
-import json
 import configparser
 import base64
-import requests
-from bs4 import BeautifulSoup
-from PIL import Image
+
 from models.sam_account_model import SAMAccountModel
 
 PROCESS_NAME = 'Steam.exe'
 DEFAULT_STEAM_PATH = 'C:\Program Files (x86)\Steam\Steam.exe'
-STEAM_DEFAUL_AVATAR_URL = 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe' \
-                          '/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg'
 
 
 class AppLogic:
@@ -36,79 +31,10 @@ class AppLogic:
         p = subprocess.Popen(self.get_steam_path() + ' ' + '-login' +
                              ' ' + login + ' ' + passwrd)
 
-    def check_avatars_dir(self):
-        if not os.path.exists('avatars/'):
-            os.mkdir('avatars')
-
-    def check_json(self):
-        if not os.path.exists('accounts.json'):
-            open('accounts.json', 'w', encoding='utf-8')
-
     def check_cfg(self):
         if not os.path.exists('settings.cfg'):
             open('settings.cfg', 'w', encoding='utf-8')
             self.set_steam_path(DEFAULT_STEAM_PATH)
-
-    def read_accs(self):
-        self.check_json()
-        with open('accounts.json', 'r', encoding='utf-8') as accs_j:
-            try:
-                accs = json.load(accs_j)
-            except Exception as e:
-                accs = []
-        return accs
-
-    def take_accs(self):
-        accs = self.read_accs()
-        sam_accounts = []
-        for acc in accs:
-            login = acc['login']
-            password = acc['password']
-            try:
-                nickname = acc['nickname']
-            except Exception as e:
-                nickname = None
-            sam_account = SAMAccountModel(login, password, nickname=nickname)
-            sam_accounts.append(sam_account)
-        return sam_accounts
-
-    def add_acc(self, user_login, user_pass, user_steamlink):
-        if (user_login is '') or (user_pass is ''):
-            return False
-        else:
-            if user_steamlink is not '':
-                account = {
-                    'login': user_login,
-                    'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8'),
-                    'steamlink': user_steamlink,
-                    'nickname': self.get_nickname(user_steamlink)
-                }
-            else:
-                account = {
-                    'login': user_login,
-                    'password': base64.b64encode(bytes(user_pass, 'utf-8')).decode('utf-8'),
-                    'steamlink': user_steamlink,
-                    'nickname': None
-                }
-                self.check_json()
-            accs = self.read_accs()
-            accs.append(account)
-            with open('accounts.json', 'w', encoding='utf-8') as accs_j:
-                json.dump(accs, accs_j, indent=2, ensure_ascii=False)
-                return True
-
-    def delete_acc(self, key):
-        accs = self.read_accs()
-        accs.remove(self.find_acc(key))
-        with open('accounts.json', 'w', encoding='utf-8') as accs_j:
-            json.dump(accs, accs_j, indent=2, ensure_ascii=False)
-
-    def find_acc(self, key):
-        accs = self.read_accs()
-        for acc in accs:
-            if key in acc.values():
-                return acc
-        return None
 
     def get_steam_path(self):
         self.check_cfg()
@@ -123,46 +49,9 @@ class AppLogic:
         with open('settings.cfg', 'w', encoding='utf-8') as config:
             cfg.write(config)
 
-    def get_nickname(self, url):
-        r = requests.get(url)
-        html = r.text
-        soup = BeautifulSoup(html, 'lxml')
-        nickname = soup.find('span', class_='actual_persona_name').text
-        return nickname
-
-    def get_default_avatar(self):
-        p = requests.get(STEAM_DEFAUL_AVATAR_URL)
-        self.check_avatars_dir()
-        image_name = 'avatars/' + 'default' + '.jpg'
-        out = open(image_name, "wb")
-        out.write(p.content)
-        out.close()
-        self.resize_image(image_name)
-        return image_name
-
-    def get_avatar(self, url):
-        r = requests.get(url)
-        html = r.text
-        soup = BeautifulSoup(html, 'lxml')
-        imagelink = soup.find('div', class_='playerAvatarAutoSizeInner').find('img')['src']
-        p = requests.get(imagelink)
-        self.check_avatars_dir()
-        image_name = 'avatars/' + self.get_nickname(url) + '.jpg'
-        out = open(image_name, "wb")
-        out.write(p.content)
-        out.close()
-        self.resize_image(image_name)
-        return image_name
-
-    def resize_image(self, imagename):
-        img = Image.open(imagename)
-        width = 64
-        height = 64
-        resized_img = img.resize((width, height), Image.ANTIALIAS)
-        resized_img.save(imagename)
-
     def login(self, key):
-        account = self.find_acc(key)
+        account_model = SAMAccountModel()
+        account = account_model.find_acc(key)
         process = self.get_process()
         if process is not None:
             process_pid = process[0]

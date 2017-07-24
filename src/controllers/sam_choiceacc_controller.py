@@ -1,13 +1,17 @@
+from controllers.confirm_conroller import SAMConfirmController
 from views.sam_choiceacc_view import ChoiceAccView
 from models.sam_list_model import AccountListModel
 from applogic.applogic import AppLogic
 from models.sam_account_model import SAMAccountModel
 
+from resourses import strings
+
 
 class SAMChoiceaccController:
     def __init__(self):
         self.applogic = AppLogic()
-        self.model = AccountListModel(self.applogic.take_accs())
+        self.account_model = SAMAccountModel()
+        self.model = AccountListModel(self.account_model.take_accs())
         self.view = ChoiceAccView(self.model)
         self.view.show()
 
@@ -21,8 +25,14 @@ class SAMChoiceaccController:
         self.view.close()
 
     def DeleteBtnIsClicked(self):
-        qmodelindex = self.view.ui.listView.selectedIndexes()[0]
-        index = qmodelindex.row()
-        data = qmodelindex.data()
-        self.applogic.delete_acc(data)
-        self.model.removeRows(index)
+        error_message = strings.confirm_message
+        error_controller = SAMConfirmController(error_message)
+        btnvalue = error_controller.view.exec_()
+        if btnvalue == 1:
+            qmodelindex = self.view.ui.listView.selectedIndexes()[0]
+            index = qmodelindex.row()
+            data = qmodelindex.data()
+            self.account_model.delete_acc(data)
+            self.model.removeRows(index)
+        else:
+            return

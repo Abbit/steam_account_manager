@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>240</height>
+    <width>360</width>
+    <height>320</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>320</width>
-    <height>240</height>
+    <width>360</width>
+    <height>320</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>240</height>
+    <height>320</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -91,6 +91,9 @@
         <property name="styleSheet">
          <string notr="true">color: rgb(255, 255, 255);</string>
         </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
        </widget>
       </item>
       <item>
@@ -111,6 +114,35 @@
       </item>
       <item>
        <widget class="QLineEdit" name="steamlink_lineEdit">
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="description_label">
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="text">
+         <string>Описание(необязательно)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="description_lineEdit">
         <property name="font">
          <font>
           <family>Roboto Condensed</family>

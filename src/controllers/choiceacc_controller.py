@@ -1,8 +1,9 @@
 from controllers.confirm_conroller import SAMConfirmController
-from views.sam_choiceacc_view import ChoiceAccView
+from controllers.editacc_controller import SAMEditaccController
+from views.choiceacc_view import ChoiceAccView
 from models.sam_list_model import AccountListModel
 from applogic.applogic import AppLogic
-from models.sam_account_model import SAMAccountModel
+from models.account_model import SAMAccountModel
 
 from resourses import strings
 
@@ -17,12 +18,22 @@ class SAMChoiceaccController:
 
         self.view.ui.choiceAccButton.clicked.connect(self.ChoiceBtnIsClicked)
         self.view.ui.listView.doubleClicked.connect(self.ChoiceBtnIsClicked)
+        self.view.ui.editAccButton.clicked.connect(self.EditBtnIsClicked)
         self.view.ui.deleteButton.clicked.connect(self.DeleteBtnIsClicked)
 
     def ChoiceBtnIsClicked(self):
         data = self.view.ui.listView.selectedIndexes()[0].data()
         self.applogic.login(data)
         self.view.close()
+
+    def EditBtnIsClicked(self):
+        qmodelindex = self.view.ui.listView.selectedIndexes()[0]
+        index = qmodelindex.row()
+        data = qmodelindex.data()
+        editacc_controller = SAMEditaccController(model=self.model,
+                                                  index=index,
+                                                  data=data)
+        editacc_controller.view.exec_()
 
     def DeleteBtnIsClicked(self):
         error_message = strings.confirm_message

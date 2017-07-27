@@ -35,9 +35,9 @@ class SAMAccountModel(object):
 
         self._nickname = None
 
-        if self.steamlink is not None:
-            self.nickname = self.get_nickname()
-            self.get_avatar()
+        # if self.steamlink is not None:
+        #     self.nickname = self.get_nickname()
+        #     self.get_avatar()
 
     @property
     def login(self):
@@ -114,6 +114,18 @@ class SAMAccountModel(object):
             sam_accounts.append(sam_account)
         return sam_accounts
 
+    def take_acc(self, key):
+        acc = self.find_acc(key)
+        login = acc['login']
+        password = acc['password']
+        steamlink = acc['steamlink']
+        description = acc['description']
+        sam_acc = SAMAccountModel(login=login,
+                                  password=password,
+                                  steamlink=steamlink,
+                                  description=description)
+        return sam_acc
+
     def add_acc(self):
         if self.login is None or self.password is None:
             return False
@@ -130,6 +142,14 @@ class SAMAccountModel(object):
             accs.append(account)
             self.write_to_json(accs)
             return True
+
+    # def edit_acc(self):
+    #     acc = self.find_acc(self.login)
+    #     acc['password'] = self.password
+    #     acc['steamlink'] = self.steamlink
+    #     acc['description'] = self.description
+    #     self.delete_acc(self.login)
+    #     self.add_acc()
 
     def delete_acc(self, key):
         accs = self.read_accs()

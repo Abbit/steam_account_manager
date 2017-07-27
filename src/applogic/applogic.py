@@ -5,7 +5,7 @@ import subprocess
 import configparser
 import base64
 
-from models.sam_account_model import SAMAccountModel
+from models.account_model import SAMAccountModel
 
 PROCESS_NAME = 'Steam.exe'
 DEFAULT_STEAM_PATH = 'C:\Program Files (x86)\Steam\Steam.exe'

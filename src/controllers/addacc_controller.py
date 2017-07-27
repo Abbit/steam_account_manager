@@ -1,6 +1,6 @@
 from controllers.error_controller import SAMErrorController
-from views.sam_addacc_view import AddAccView
-from models.sam_account_model import SAMAccountModel
+from views.addacc_view import AddAccView
+from models.account_model import SAMAccountModel
 
 from resourses import strings
 

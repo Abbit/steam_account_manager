@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtWidgets
-from controllers.sam_main_contoller import SAMMainController
+from controllers.main_contoller import SAMMainController
 
 
 class App(QtWidgets.QApplication):

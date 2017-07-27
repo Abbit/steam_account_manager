@@ -1,7 +1,7 @@
-from views.sam_main_view import MainView
-from controllers.sam_choiceacc_controller import SAMChoiceaccController
-from controllers.sam_addacc_controller import SAMAddaccController
-from controllers.sam_settings_controller import SAMSettingsController
+from views.main_view import MainView
+from controllers.choiceacc_controller import SAMChoiceaccController
+from controllers.addacc_controller import SAMAddaccController
+from controllers.settings_controller import SAMSettingsController
 
 
 class SAMMainController:

@@ -1,4 +1,4 @@
-from views.sam_settings_view import SettingsView
+from views.settings_view import SettingsView
 from PyQt5 import QtWidgets
 from applogic.applogic import AppLogic
 

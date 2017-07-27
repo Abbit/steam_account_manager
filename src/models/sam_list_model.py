@@ -30,14 +30,14 @@ class AccountListModel(QtCore.QAbstractListModel):
     def flags(self, index):
         return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
-    # def insertRows(self, position, rows, item, parent=QtCore.QModelIndex()):
-    #     self.beginInsertRows(parent, position, position + rows - 1)
-    #
-    #     for i in range(rows):
-    #         self.__accounts.insert(position, item)
-    #
-    #     self.endInsertRows()
-    #     return True
+    def insertRows(self, position, item, rows=1, parent=QtCore.QModelIndex()):
+        self.beginInsertRows(parent, position, position + rows - 1)
+
+        for i in range(rows):
+            self.__accounts.insert(position, item)
+
+        self.endInsertRows()
+        return True
 
     def removeRows(self, position, rows=1, parent=QtCore.QModelIndex()):
         self.beginRemoveRows(parent, position, position + rows - 1)

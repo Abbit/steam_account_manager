@@ -41,6 +41,15 @@ class Ui_Dialog(object):
 "color: rgb(255, 255, 255);")
         self.choiceAccButton.setObjectName("choiceAccButton")
         self.verticalLayout.addWidget(self.choiceAccButton)
+        self.editAccButton = QtWidgets.QPushButton(Dialog)
+        font = QtGui.QFont()
+        font.setFamily("Roboto Condensed")
+        font.setPointSize(12)
+        self.editAccButton.setFont(font)
+        self.editAccButton.setStyleSheet("background-color: rgb(66, 66, 66);\n"
+"color: rgb(255, 255, 255);")
+        self.editAccButton.setObjectName("editAccButton")
+        self.verticalLayout.addWidget(self.editAccButton)
         self.deleteButton = QtWidgets.QPushButton(Dialog)
         font = QtGui.QFont()
         font.setFamily("Roboto Condensed")
@@ -68,6 +77,7 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Выбор аккаунта"))
         self.choiceAccButton.setText(_translate("Dialog", "Выбрать аккаунт"))
+        self.editAccButton.setText(_translate("Dialog", "Редактировать аккаунт"))
         self.deleteButton.setText(_translate("Dialog", "Удалить аккаунт"))
         self.backButton.setText(_translate("Dialog", "Назад"))
 

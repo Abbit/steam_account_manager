@@ -1,5 +1,4 @@
 from controllers.error_controller import SAMErrorController
-from models.sam_list_model import AccountListModel
 from views.editacc_view import EditAccView
 from models.account_model import SAMAccountModel
 

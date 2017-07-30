@@ -35,9 +35,10 @@ class SAMAccountModel(object):
 
         self._nickname = None
 
-        # if self.steamlink is not None:
-        #     self.nickname = self.get_nickname()
-        #     self.get_avatar()
+        if self.steamlink is not None:
+            self.nickname = self.get_nickname()
+
+        self.get_avatar()
 
     @property
     def login(self):
@@ -143,14 +144,6 @@ class SAMAccountModel(object):
             self.write_to_json(accs)
             return True
 
-    # def edit_acc(self):
-    #     acc = self.find_acc(self.login)
-    #     acc['password'] = self.password
-    #     acc['steamlink'] = self.steamlink
-    #     acc['description'] = self.description
-    #     self.delete_acc(self.login)
-    #     self.add_acc()
-
     def delete_acc(self, key):
         accs = self.read_accs()
         accs.remove(self.find_acc(key))
@@ -181,6 +174,8 @@ class SAMAccountModel(object):
             return nickname
 
     def get_default_avatar(self):
+        if os.path.exists('avatars/default.jpg'):
+            return 'avatars/default.jpg'
         try:
             response = requests.get(STEAM_DEFAUL_AVATAR_URL, timeout=TIMEOUT_TIME)
         except Exception as e:
@@ -192,6 +187,8 @@ class SAMAccountModel(object):
         if self.steamlink is None:
             return self.get_default_avatar()
         else:
+            if os.path.exists('avatars/' + self.login + self.nickname + '.jpg'):
+                return 'avatars/' + self.login + self.nickname + '.jpg'
             try:
                 r = requests.get(self.steamlink, timeout=TIMEOUT_TIME)
             except Exception as e:
@@ -203,7 +200,7 @@ class SAMAccountModel(object):
                 response = requests.get(imagelink, timeout=TIMEOUT_TIME)
             except Exception as e:
                 return False
-            imagepath = self.download_avatar(response.content, self.login)
+            imagepath = self.download_avatar(response.content, self.login+self.nickname)
             return imagepath
 
     def download_avatar(self, data, imagename):

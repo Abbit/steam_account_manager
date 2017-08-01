@@ -17,11 +17,7 @@ TIMEOUT_TIME = 60
 class SAMAccountModel(object):
     def __init__(self, login=None, password=None, steamlink=None, description=None):
         self._login = login
-
-        try:
-            self._password = base64.b64encode(bytes(password, 'utf-8')).decode('utf-8')
-        except:
-            self._password = password
+        self._password = password
 
         if steamlink is "":
             self._steamlink = None
@@ -105,7 +101,7 @@ class SAMAccountModel(object):
         sam_accounts = []
         for acc in accs:
             login = acc['login']
-            password = acc['password']
+            password = base64.b64decode(acc['password']).decode('utf-8')
             steamlink = acc['steamlink']
             description = acc['description']
             sam_account = SAMAccountModel(login=login,
@@ -118,7 +114,7 @@ class SAMAccountModel(object):
     def take_acc(self, key):
         acc = self.find_acc(key)
         login = acc['login']
-        password = acc['password']
+        password = base64.b64decode(acc['password']).decode('utf-8')
         steamlink = acc['steamlink']
         description = acc['description']
         sam_acc = SAMAccountModel(login=login,
@@ -133,7 +129,7 @@ class SAMAccountModel(object):
         else:
             account = {
                 'login': self.login,
-                'password': self.password,
+                'password': base64.b64encode(bytes(self.password, 'utf-8')).decode('utf-8'),
                 'steamlink': self.steamlink,
                 'nickname': self._nickname,  # для того чтобы в json не записываля логин 2 раза если ник отсутствует
                 'description': self.description

@@ -2,7 +2,7 @@ from controllers.confirm_conroller import SAMConfirmController
 from controllers.editacc_controller import SAMEditaccController
 from views.choiceacc_view import ChoiceAccView
 from models.sam_list_model import AccountListModel
-from applogic.applogic import AppLogic
+from utility.steamprocess import SteamProcess
 from models.account_model import SAMAccountModel
 
 from resourses import strings
@@ -10,7 +10,7 @@ from resourses import strings
 
 class SAMChoiceaccController:
     def __init__(self):
-        self.applogic = AppLogic()
+        self.steamprocess = SteamProcess()
         self.account_model = SAMAccountModel()
         self.model = AccountListModel(self.account_model.take_accs())
         self.view = ChoiceAccView(self.model)
@@ -23,7 +23,7 @@ class SAMChoiceaccController:
 
     def ChoiceBtnIsClicked(self):
         data = self.view.ui.listView.selectedIndexes()[0].data()
-        self.applogic.login(data)
+        self.steamprocess.login(data)
         self.view.close()
 
     def EditBtnIsClicked(self):

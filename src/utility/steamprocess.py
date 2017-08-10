@@ -3,22 +3,19 @@ import psutil
 import time
 import subprocess
 import configparser
-import base64
 
 from models.account_model import SAMAccountModel
-
-PROCESS_NAME = 'Steam.exe'
-DEFAULT_STEAM_PATH = 'C:\Program Files (x86)\Steam\Steam.exe'
+from resourses import settings
 
 
-class AppLogic:
+class SteamProcess:
     def __init__(self):
         pass
 
     # Находим процесс steam'а
     def get_process(self):
         for proc in psutil.process_iter():
-            if proc.name() == PROCESS_NAME:
+            if proc.name() == settings.PROCESS_NAME:
                 steam_proc = (proc.pid, proc.exe())
                 return steam_proc
 
@@ -27,14 +24,13 @@ class AppLogic:
         os.kill(pid, -1)
 
     # Запускаем новый процесс steam'а с параметрами логина
-    def start_process(self, login, passwrd):
-        p = subprocess.Popen(self.get_steam_path() + ' ' + '-login' +
-                             ' ' + login + ' ' + passwrd)
+    def start_process(self, login, password):
+        subprocess.Popen(self.get_steam_path() + ' ' + '-login' + ' ' + login + ' ' + password)
 
     def check_cfg(self):
         if not os.path.exists('settings.cfg'):
             open('settings.cfg', 'w', encoding='utf-8')
-            self.set_steam_path(DEFAULT_STEAM_PATH)
+            self.set_steam_path(settings.DEFAULT_STEAM_PATH)
 
     def get_steam_path(self):
         self.check_cfg()
@@ -51,10 +47,10 @@ class AppLogic:
 
     def login(self, key):
         account_model = SAMAccountModel()
-        account = account_model.find_acc(key)
+        account = account_model.take_acc(key)
         process = self.get_process()
         if process is not None:
             process_pid = process[0]
             self.kill_process(process_pid)
             time.sleep(1)
-        self.start_process(account['login'], base64.b64decode(account['password']).decode('utf-8'))
+        self.start_process(account.login, account.password)

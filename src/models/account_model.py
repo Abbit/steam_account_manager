@@ -4,14 +4,9 @@ import os
 
 import requests
 from PIL import Image
-from bs4 import BeautifulSoup
 
-
-STEAM_DEFAUL_AVATAR_URL = 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe' \
-                          '/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg'
-
-JSON_PATH = 'accounts.json'
-TIMEOUT_TIME = 60
+from resourses import settings
+from utility.parsingthread import ParsingThread
 
 
 class SAMAccountModel(object):
@@ -32,9 +27,10 @@ class SAMAccountModel(object):
         self._nickname = None
 
         if self.steamlink is not None:
-            self.nickname = self.get_nickname()
-
-        self.get_avatar()
+            parsingthread = ParsingThread(self)
+            parsingthread.start()
+        else:
+            self.get_default_avatar()
 
     @property
     def login(self):
@@ -80,8 +76,8 @@ class SAMAccountModel(object):
         self._description = value
 
     def check_json(self):
-        if not os.path.exists(JSON_PATH):
-            open(JSON_PATH, 'w', encoding='utf-8')
+        if not os.path.exists(settings.JSON_PATH):
+            open(settings.JSON_PATH, 'w', encoding='utf-8')
 
     def check_avatars_dir(self):
         if not os.path.exists('avatars/'):
@@ -89,10 +85,10 @@ class SAMAccountModel(object):
 
     def read_accs(self):
         self.check_json()
-        with open(JSON_PATH, 'r', encoding='utf-8') as accs_j:
+        with open(settings.JSON_PATH, 'r', encoding='utf-8') as accs_j:
             try:
                 accs = json.load(accs_j)
-            except Exception as e:
+            except Exception:
                 accs = []
         return accs
 
@@ -153,51 +149,18 @@ class SAMAccountModel(object):
         return False
 
     def write_to_json(self, data):
-        with open(JSON_PATH, 'w', encoding='utf-8') as accs_j:
+        with open(settings.JSON_PATH, 'w', encoding='utf-8') as accs_j:
             json.dump(data, accs_j, indent=2, ensure_ascii=False)
-
-    def get_nickname(self):
-        if self.steamlink is None:
-            return False
-        else:
-            try:
-                r = requests.get(self.steamlink, timeout=TIMEOUT_TIME)
-            except Exception as e:
-                return False
-            html = r.text
-            soup = BeautifulSoup(html, 'lxml')
-            nickname = soup.find('span', class_='actual_persona_name').text
-            return nickname
 
     def get_default_avatar(self):
         if os.path.exists('avatars/default.jpg'):
             return 'avatars/default.jpg'
         try:
-            response = requests.get(STEAM_DEFAUL_AVATAR_URL, timeout=TIMEOUT_TIME)
-        except Exception as e:
+            response = requests.get(settings.STEAM_DEFAUL_AVATAR_URL, timeout=settings.TIMEOUT_TIME)
+        except Exception:
             return False
         imagepath = self.download_avatar(response.content, 'default')
         return imagepath
-
-    def get_avatar(self):
-        if self.steamlink is None:
-            return self.get_default_avatar()
-        else:
-            if os.path.exists('avatars/' + self.login + self.nickname + '.jpg'):
-                return 'avatars/' + self.login + self.nickname + '.jpg'
-            try:
-                r = requests.get(self.steamlink, timeout=TIMEOUT_TIME)
-            except Exception as e:
-                return False
-            html = r.text
-            soup = BeautifulSoup(html, 'lxml')
-            imagelink = soup.find('div', class_='playerAvatarAutoSizeInner').find('img')['src']
-            try:
-                response = requests.get(imagelink, timeout=TIMEOUT_TIME)
-            except Exception as e:
-                return False
-            imagepath = self.download_avatar(response.content, self.login+self.nickname)
-            return imagepath
 
     def download_avatar(self, data, imagename):
         self.check_avatars_dir()

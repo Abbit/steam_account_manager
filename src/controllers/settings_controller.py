@@ -1,11 +1,11 @@
 from views.settings_view import SettingsView
 from PyQt5 import QtWidgets
-from applogic.applogic import AppLogic
+from utility.steamprocess import SteamProcess
 
 
 class SAMSettingsController:
     def __init__(self):
-        self.applogic = AppLogic()
+        self.steamprocess = SteamProcess()
         self.view = SettingsView()
         self.view.show()
 
@@ -13,5 +13,5 @@ class SAMSettingsController:
 
     def selectPathBtnIsClicked(self):
         steam_path = QtWidgets.QFileDialog.getExistingDirectory()
-        self.applogic.set_steam_path(steam_path + "/Steam.exe")
+        self.steamprocess.set_steam_path(steam_path + "/Steam.exe")
         self.view.close()

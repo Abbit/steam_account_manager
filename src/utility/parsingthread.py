@@ -32,7 +32,7 @@ class ParsingThread(Thread):
         return nickname
 
     def get_avatar(self, html):
-        if os.path.exists('avatars/' + self.account.login + self.account.nickname + '.jpg'):
+        if os.path.exists('avatars/{0}{1}.jpg'.format(self.account.login, self.account.nickname)):
             return 'avatars/' + self.account.login + self.account.nickname + '.jpg'
         soup = BeautifulSoup(html, 'lxml')
         imagelink = soup.find('div', class_='playerAvatarAutoSizeInner').find('img')['src']
@@ -41,7 +41,7 @@ class ParsingThread(Thread):
 
     def download_avatar(self, data, imagename):
         self.check_avatars_dir()
-        imagepath = 'avatars/' + imagename + '.jpg'
+        imagepath = 'avatars/{0}.jpg'.format(imagename)
         out = open(imagepath, "wb")
         out.write(data)
         out.close()

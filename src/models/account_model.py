@@ -142,10 +142,11 @@ class SAMAccountModel(object):
         accs.remove(self.find_acc(key))
         self.write_to_json(accs)
 
-    def find_acc(self, key):
+    def find_acc(self, data):
+        login = data[data.index('(')+1: -1]
         accs = self.read_accs()
         for acc in accs:
-            if key in acc.values():
+            if login in acc.values():
                 return acc
         return False
 

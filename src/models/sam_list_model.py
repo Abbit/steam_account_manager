@@ -25,7 +25,7 @@ class AccountListModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.DisplayRole:
             row = index.row()
             value = self.__accounts[row]
-            return value.nickname
+            return '{0} ({1})'.format(value.nickname, value.login)
 
     def flags(self, index):
         return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable

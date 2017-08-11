@@ -1,7 +1,6 @@
 from controllers.confirm_conroller import SAMConfirmController
 from controllers.editacc_controller import SAMEditaccController
 from views.choiceacc_view import ChoiceAccView
-from models.sam_list_model import AccountListModel
 from utility.steamprocess import SteamProcess
 from models.account_model import SAMAccountModel
 
@@ -9,10 +8,10 @@ from resourses import strings
 
 
 class SAMChoiceaccController:
-    def __init__(self):
+    def __init__(self, model):
         self.steamprocess = SteamProcess()
         self.account_model = SAMAccountModel()
-        self.model = AccountListModel(self.account_model.take_accs())
+        self.model = model
         self.view = ChoiceAccView(self.model)
         self.view.show()
 

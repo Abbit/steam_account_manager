@@ -29,6 +29,7 @@ class SAMAccountModel(object):
         if self.steamlink is not None:
             parsingthread = ParsingThread(self)
             parsingthread.start()
+            parsingthread.join()
         else:
             self.get_default_avatar()
 

@@ -19,7 +19,7 @@ class AccountListModel(QtCore.QAbstractListModel):
             if self.__accounts[row].steamlink is not None:
                 icon.addFile('avatars/' + self.__accounts[row].login+self.__accounts[row].nickname + '.jpg')
             else:
-                icon.addFile('avatars/' + 'default' + '.jpg')
+                icon.addFile('avatars/default.jpg')
             return icon
 
         if role == QtCore.Qt.DisplayRole:

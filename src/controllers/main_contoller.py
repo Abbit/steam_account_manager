@@ -5,8 +5,9 @@ from controllers.settings_controller import SAMSettingsController
 
 
 class SAMMainController:
-    def __init__(self):
+    def __init__(self, model):
        self.view = MainView()
+       self.model = model
        self.view.show()
 
        self.view.ui.choice_acc_btn.clicked.connect(self.choiceaccBtnIsClicked)
@@ -14,7 +15,7 @@ class SAMMainController:
        self.view.ui.settings_btn.clicked.connect(self.settingsBtnIsClicked)
 
     def choiceaccBtnIsClicked(self):
-        choiceacc_controller = SAMChoiceaccController()
+        choiceacc_controller = SAMChoiceaccController(self.model)
         choiceacc_controller.view.exec_()
 
     def addaccBtnIsClicked(self):

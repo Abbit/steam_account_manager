@@ -1,5 +1,6 @@
-from controllers.confirm_conroller import SAMConfirmController
-from controllers.editacc_controller import SAMEditaccController
+from controllers.confirm_conroller import ConfirmController
+from controllers.controller import Controller
+from controllers.editacc_controller import EditaccController
 from views.choiceacc_view import ChoiceAccView
 from utility.steamprocess import SteamProcess
 from models.account_model import SAMAccountModel
@@ -7,18 +8,20 @@ from models.account_model import SAMAccountModel
 from resourses import strings
 
 
-class SAMChoiceaccController:
+class ChoiceaccController(Controller):
     def __init__(self, model):
-        self.steamprocess = SteamProcess()
-        self.account_model = SAMAccountModel()
         self.model = model
         self.view = ChoiceAccView(self.model)
-        self.view.show()
-
+        super(ChoiceaccController, self).__init__(self.view)
+        self.steamprocess = SteamProcess()
+        self.account_model = SAMAccountModel()
+        # Привязка кнопок к функциям
         self.view.ui.choiceAccButton.clicked.connect(self.ChoiceBtnIsClicked)
         self.view.ui.listView.doubleClicked.connect(self.ChoiceBtnIsClicked)
         self.view.ui.editAccButton.clicked.connect(self.EditBtnIsClicked)
         self.view.ui.deleteButton.clicked.connect(self.DeleteBtnIsClicked)
+        # Запуск окна
+        self.view.exec_()
 
     def ChoiceBtnIsClicked(self):
         data = self.view.ui.listView.selectedIndexes()[0].data()
@@ -29,14 +32,13 @@ class SAMChoiceaccController:
         qmodelindex = self.view.ui.listView.selectedIndexes()[0]
         index = qmodelindex.row()
         data = qmodelindex.data()
-        editacc_controller = SAMEditaccController(model=self.model,
-                                                  index=index,
-                                                  data=data)
-        editacc_controller.view.exec_()
+        editacc_controller = EditaccController(model=self.model,
+                                               index=index,
+                                               data=data)
 
     def DeleteBtnIsClicked(self):
         error_message = strings.confirm_message
-        error_controller = SAMConfirmController(error_message)
+        error_controller = ConfirmController(error_message)
         btnvalue = error_controller.view.exec_()
         if btnvalue == 1:
             qmodelindex = self.view.ui.listView.selectedIndexes()[0]

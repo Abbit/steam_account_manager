@@ -1,27 +1,27 @@
+from controllers.controller import Controller
 from views.main_view import MainView
-from controllers.choiceacc_controller import SAMChoiceaccController
-from controllers.addacc_controller import SAMAddaccController
-from controllers.settings_controller import SAMSettingsController
+from controllers.choiceacc_controller import ChoiceaccController
+from controllers.addacc_controller import AddaccController
+from controllers.settings_controller import SettingsController
 
 
-class SAMMainController:
+class MainController(Controller):
     def __init__(self, model):
-       self.view = MainView()
-       self.model = model
-       self.view.show()
-
-       self.view.ui.choice_acc_btn.clicked.connect(self.choiceaccBtnIsClicked)
-       self.view.ui.add_acc_btn.clicked.connect(self.addaccBtnIsClicked)
-       self.view.ui.settings_btn.clicked.connect(self.settingsBtnIsClicked)
+        self.view = MainView()
+        self.model = model
+        super(MainController, self).__init__(self.view)
+        # Привязка кнопок к функциям
+        self.view.ui.choice_acc_btn.clicked.connect(self.choiceaccBtnIsClicked)
+        self.view.ui.add_acc_btn.clicked.connect(self.addaccBtnIsClicked)
+        self.view.ui.settings_btn.clicked.connect(self.settingsBtnIsClicked)
+        # # Запуск окна
+        # self.view.exec_()
 
     def choiceaccBtnIsClicked(self):
-        choiceacc_controller = SAMChoiceaccController(self.model)
-        choiceacc_controller.view.exec_()
+        choiceacc_controller = ChoiceaccController(self.model)
 
     def addaccBtnIsClicked(self):
-        addacc_controller = SAMAddaccController()
-        addacc_controller.view.exec_()
+        addacc_controller = AddaccController()
 
     def settingsBtnIsClicked(self):
-        settings_controller = SAMSettingsController()
-        settings_controller.view.exec_()
+        settings_controller = SettingsController()

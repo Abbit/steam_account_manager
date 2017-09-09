@@ -5,7 +5,7 @@ import subprocess
 import configparser
 
 from models.account_model import SAMAccountModel
-from resourses import settings
+from resourses import config
 
 
 class SteamProcess:
@@ -15,7 +15,7 @@ class SteamProcess:
     # Находим процесс steam'а
     def get_process(self):
         for proc in psutil.process_iter():
-            if proc.name() == settings.PROCESS_NAME:
+            if proc.name() == config.PROCESS_NAME:
                 steam_proc = (proc.pid, proc.exe())
                 return steam_proc
 
@@ -30,7 +30,7 @@ class SteamProcess:
     def check_cfg(self):
         if not os.path.exists('settings.cfg'):
             open('settings.cfg', 'w', encoding='utf-8')
-            self.set_steam_path(settings.DEFAULT_STEAM_PATH)
+            self.set_steam_path(config.DEFAULT_STEAM_PATH)
 
     def get_steam_path(self):
         self.check_cfg()

@@ -24,3 +24,8 @@ src/view/ui/gen/__pycache__/
 /venv/
 
 /build/avatars/
+/.vscode/
+/pyinstaller/
+/build.py
+/src/views/ui/gen/main_window_old.py
+/src/views/ui/main_window_old.ui

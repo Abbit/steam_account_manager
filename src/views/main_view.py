@@ -1,9 +1,8 @@
-from PyQt5 import QtWidgets
-from .ui.gen.main_window import Ui_MainWindow
+from views.view import View
+from .ui.gen.main_window import Ui_Dialog
 
 
-class MainView(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super(MainView, self).__init__(parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+class MainView(View):
+    def __init__(self):
+        self.ui = Ui_Dialog()
+        super(MainView, self).__init__(self.ui)

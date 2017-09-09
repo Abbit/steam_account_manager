@@ -2,15 +2,16 @@ import os
 from threading import Thread
 
 import requests
-from PIL import Image
 from bs4 import BeautifulSoup
 
-from resourses import settings
+from resourses import config
+from utility.sam_image import SAMImage
 
 
 class ParsingThread(Thread):
     def __init__(self, acc):
         Thread.__init__(self)
+        self.sam_image = SAMImage()
         self.account = acc
 
     def run(self):
@@ -20,7 +21,7 @@ class ParsingThread(Thread):
 
     def get_html(self, url):
         try:
-            r = requests.get(url, timeout=settings.TIMEOUT_TIME)
+            r = requests.get(url, timeout=config.TIMEOUT_TIME)
         except Exception:
             return False
         html = r.content
@@ -32,29 +33,9 @@ class ParsingThread(Thread):
         return nickname
 
     def get_avatar(self, html):
-        if os.path.exists('avatars/{0}{1}.jpg'.format(self.account.login, self.account.nickname)):
-            return 'avatars/' + self.account.login + self.account.nickname + '.jpg'
+        if os.path.exists('avatars/{0}.jpg'.format(self.account.login)):
+            return 'avatars/{0}.jpg'.format(self.account.login)
         soup = BeautifulSoup(html, 'lxml')
         imagelink = soup.find('div', class_='playerAvatarAutoSizeInner').find('img')['src']
-        imagepath = self.download_avatar(self.get_html(imagelink), self.account.login + self.account.nickname)
+        imagepath = self.sam_image.download_avatar(self.get_html(imagelink), self.account.login)
         return imagepath
-
-    def download_avatar(self, data, imagename):
-        self.check_avatars_dir()
-        imagepath = 'avatars/{0}.jpg'.format(imagename)
-        out = open(imagepath, "wb")
-        out.write(data)
-        out.close()
-        self.resize_image(imagepath)
-        return imagepath
-
-    def resize_image(self, imagepath):
-        img = Image.open(imagepath)
-        width = 64
-        height = 64
-        resized_img = img.resize((width, height), Image.ANTIALIAS)
-        resized_img.save(imagepath)
-
-    def check_avatars_dir(self):
-        if not os.path.exists('avatars/'):
-            os.mkdir('avatars')

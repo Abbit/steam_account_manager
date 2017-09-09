@@ -1,16 +1,16 @@
 import sys
 from PyQt5 import QtWidgets
-from controllers.main_contoller import SAMMainController
-from models.account_model import SAMAccountModel
-from models.sam_list_model import AccountListModel
+
+from controllers.loading_controller import LoadingController
+from controllers.main_contoller import MainController
 
 
 class App(QtWidgets.QApplication):
     def __init__(self, sys_argv):
         super(App, self).__init__(sys_argv)
-        account_model = SAMAccountModel()
-        model = AccountListModel(account_model.take_accs())
-        self.controller = SAMMainController(model)
+        self.loading_controller = LoadingController()
+        model = self.loading_controller.get_model()
+        self.controller = MainController(model)
 
 
 def exception_hook(type_, value, tb):

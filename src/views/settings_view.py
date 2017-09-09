@@ -1,10 +1,12 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtCore
+
+from views.view import View
 from .ui.gen.settings_dialog import Ui_Dialog
 
 
-class SettingsView(QtWidgets.QDialog):
-    def __init__(self, parent=None):
-        super(SettingsView, self).__init__(parent)
+class SettingsView(View):
+    def __init__(self):
         self.ui = Ui_Dialog()
-        self.ui.setupUi(self)
+        super(SettingsView, self).__init__(self.ui)
+
         self.setMaximumSize(QtCore.QSize(16777215, self.height()))

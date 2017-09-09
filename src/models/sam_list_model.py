@@ -17,7 +17,7 @@ class AccountListModel(QtCore.QAbstractListModel):
             row = index.row()
             icon = QtGui.QIcon()
             if self.__accounts[row].steamlink is not None:
-                icon.addFile('avatars/' + self.__accounts[row].login+self.__accounts[row].nickname + '.jpg')
+                icon.addFile('avatars/{0}.jpg'.format(self.__accounts[row].login))
             else:
                 icon.addFile('avatars/default.jpg')
             return icon
@@ -25,7 +25,10 @@ class AccountListModel(QtCore.QAbstractListModel):
         if role == QtCore.Qt.DisplayRole:
             row = index.row()
             value = self.__accounts[row]
-            return '{0} ({1})'.format(value.nickname, value.login)
+            if value.nickname == value.login:
+                return '{0}'.format(value.login)
+            else:
+                return '{0} ({1})'.format(value.nickname, value.login)
 
     def flags(self, index):
         return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable

@@ -1,5 +1,5 @@
 from controllers.controller import Controller
-from controllers.error_controller import ErrorController
+from controllers.message_controller import MessageController
 from views.editacc_view import EditAccView
 from models.account_model import SAMAccountModel
 
@@ -26,8 +26,7 @@ class EditaccController(Controller):
         newpassword = self.view.ui.passwrd_lineEdit.text()
         if newpassword is "":
             error_message = strings.password_error_message
-            error_controller = ErrorController(error_message)
-            error_controller.view.exec_()
+            message_controller = MessageController('error', error_message)
             return -1
         newsteamlink = self.view.ui.steamlink_lineEdit.text()
         newdescription = self.view.ui.description_lineEdit.text()

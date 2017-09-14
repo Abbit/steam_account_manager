@@ -1,5 +1,5 @@
 from controllers.controller import Controller
-from controllers.error_controller import ErrorController
+from controllers.message_controller import MessageController
 from views.addacc_view import AddAccView
 from models.account_model import SAMAccountModel
 
@@ -20,7 +20,7 @@ class AddaccController(Controller):
         password = self.view.ui.passwrd_lineEdit.text()
         if (login is "") or (password is ""):
             error_message = strings.login_error_message
-            error_controller = ErrorController(error_message)
+            message_controller = MessageController('error', error_message)
             return -1
         steamlink = self.view.ui.steamlink_lineEdit.text()
         description = self.view.ui.description_lineEdit.text()

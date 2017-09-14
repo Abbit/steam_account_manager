@@ -1,6 +1,6 @@
-from controllers.confirm_conroller import ConfirmController
 from controllers.controller import Controller
 from controllers.editacc_controller import EditaccController
+from controllers.message_controller import MessageController
 from views.choiceacc_view import ChoiceAccView
 from utility.steamprocess import SteamProcess
 from models.account_model import SAMAccountModel
@@ -23,28 +23,25 @@ class ChoiceaccController(Controller):
         # Запуск окна
         self.view.exec_()
 
+    def take_data(self):
+        return self.view.ui.listView.selectedIndexes()[0].data()
+
+    def take_index(self):
+        return self.view.ui.listView.selectedIndexes()[0].row()
+
     def ChoiceBtnIsClicked(self):
-        data = self.view.ui.listView.selectedIndexes()[0].data()
-        self.steamprocess.login(data)
+        self.steamprocess.login(self.take_data())
         self.view.close()
 
     def EditBtnIsClicked(self):
-        qmodelindex = self.view.ui.listView.selectedIndexes()[0]
-        index = qmodelindex.row()
-        data = qmodelindex.data()
         editacc_controller = EditaccController(model=self.model,
-                                               index=index,
-                                               data=data)
+                                               index=self.take_index(),
+                                               data=self.take_data())
 
     def DeleteBtnIsClicked(self):
-        error_message = strings.confirm_message
-        error_controller = ConfirmController(error_message)
-        btnvalue = error_controller.view.exec_()
+        confirm_message = strings.confirm_message
+        message_controller = MessageController('confirm', confirm_message)
+        btnvalue = message_controller.view.exec_()
         if btnvalue == 1:
-            qmodelindex = self.view.ui.listView.selectedIndexes()[0]
-            index = qmodelindex.row()
-            data = qmodelindex.data()
-            self.account_model.delete_acc(data)
-            self.model.removeRows(index)
-        else:
-            return
+            self.account_model.delete_acc(self.take_data())
+            self.model.removeRows(self.take_index())

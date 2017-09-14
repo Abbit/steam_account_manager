@@ -20,6 +20,8 @@ class SAMImage:
         return imagepath
 
     def download_avatar(self, data, imagename):
+        if not os.path.exists('avatars/'):
+            os.mkdir('avatars/')
         imagepath = config.IMAGE_PATH.format(imagename)
         out = open(imagepath, "wb")
         out.write(data)

@@ -6,7 +6,3 @@ class View(QtWidgets.QDialog):
         super(View, self).__init__(parent)
         self.ui = ui
         self.ui.setupUi(self)
-
-        # if model is not None:
-        #     self.model = model
-        #     self.ui.listView.setModel(self.model)

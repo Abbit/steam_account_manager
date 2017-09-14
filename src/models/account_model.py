@@ -32,7 +32,6 @@ class SAMAccountModel(object):
             description = acc['description']
             account = self.create_acc(login, password, steamlink, description)
             accounts.append(account)
-
         return accounts
 
     def take_acc(self, key):

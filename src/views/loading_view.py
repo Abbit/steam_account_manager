@@ -1,7 +1,7 @@
 from PyQt5 import QtCore
 
 from views.view import View
-from .ui.gen.loading_dialog import Ui_Dialog
+from .ui.gen.ui_loading_dialog import Ui_Dialog
 
 
 class LoadingView(View):

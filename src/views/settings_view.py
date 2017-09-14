@@ -1,7 +1,7 @@
 from PyQt5 import QtCore
 
 from views.view import View
-from .ui.gen.settings_dialog import Ui_Dialog
+from .ui.gen.ui_settings_dialog import Ui_Dialog
 
 
 class SettingsView(View):

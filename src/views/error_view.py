@@ -1,5 +1,5 @@
 from views.view import View
-from .ui.gen.error_dialog import Ui_Dialog
+from .ui.gen.ui_error_dialog import Ui_Dialog
 
 
 class ErrorView(View):

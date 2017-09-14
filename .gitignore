@@ -25,4 +25,4 @@ src/view/ui/gen/__pycache__/
 /build.py
 /src/views/ui/main_window_old.ui
 /src/views/ui/gen/main_window_old.py
-/src/utility/steamlink_parser.py
+/assets/

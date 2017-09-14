@@ -1,5 +1,5 @@
 from views.view import View
-from .ui.gen.main_window import Ui_Dialog
+from .ui.gen.ui_main_window import Ui_Dialog
 
 
 class MainView(View):

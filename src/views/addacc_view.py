@@ -1,5 +1,5 @@
 from views.view import View
-from .ui.gen.addacc_dialog import Ui_Dialog
+from .ui.gen.ui_addacc_dialog import Ui_Dialog
 
 
 class AddAccView(View):

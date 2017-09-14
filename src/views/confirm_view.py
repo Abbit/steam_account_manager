@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
 from views.view import View
-from .ui.gen.confirm_dialog import Ui_Dialog
+from .ui.gen.ui_confirm_dialog import Ui_Dialog
 
 
 class ConfirmView(View):

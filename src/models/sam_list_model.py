@@ -6,6 +6,14 @@ class AccountListModel(QtCore.QAbstractListModel):
         super(AccountListModel, self).__init__(parent)
         self.__accounts = accounts
 
+    @property
+    def accounts(self):
+        return self.__accounts
+
+    @accounts.setter
+    def accounts(self, accounts):
+        self.__accounts = accounts
+
     def rowCount(self, parent):
         return len(self.__accounts)
 

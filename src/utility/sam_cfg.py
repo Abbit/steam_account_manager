@@ -1,5 +1,7 @@
 import configparser
 
+import os
+
 from resourses import config
 
 

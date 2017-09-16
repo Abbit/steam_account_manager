@@ -1,3 +1,4 @@
+# coding=utf-8
 from controllers.controller import Controller
 from views.message_view import MessageView
 

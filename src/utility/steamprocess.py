@@ -1,6 +1,7 @@
+# coding=utf-8
 import os
-import psutil
 import time
+import psutil
 import subprocess
 
 from models.account_model import SAMAccountModel
@@ -9,9 +10,6 @@ from utility.sam_cfg import SAMCfg
 
 
 class SteamProcess:
-    def __init__(self):
-        self.sam_cfg = SAMCfg()
-
     # Находим процесс steam'а
     def get_process(self):
         for proc in psutil.process_iter():
@@ -25,7 +23,7 @@ class SteamProcess:
 
     # Запускаем новый процесс steam'а с параметрами логина
     def start_process(self, login, password):
-        subprocess.Popen(self.sam_cfg.get_steam_path() + ' ' + '-login' + ' ' + login + ' ' + password)
+        subprocess.Popen(SAMCfg.get_steam_path() + ' ' + '-login' + ' ' + login + ' ' + password)
 
     def login(self, key):
         account_model = SAMAccountModel()
@@ -34,5 +32,5 @@ class SteamProcess:
         if process is not None:
             process_pid = process[0]
             self.kill_process(process_pid)
-            time.sleep(1)
+            time.sleep(0.5)
         self.start_process(account.login, account.password)

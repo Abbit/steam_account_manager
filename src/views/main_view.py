@@ -1,3 +1,4 @@
+# coding=utf-8
 from views.view import View
 from .ui.gen.ui_main_window import Ui_Dialog
 

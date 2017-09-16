@@ -1,15 +1,12 @@
+# coding=utf-8
 import base64
 from models.account import Account
-from utility.sam_image import SAMImage
 from utility.sam_json import SAMJson
 
 
 class SAMAccountModel(object):
-    def __init__(self):
-        self.sam_json = SAMJson()
-        self.sam_image = SAMImage()
-
-    def create_acc(self, login, password, steamlink, description):
+    @staticmethod
+    def create_acc(login, password, steamlink, description):
         account = Account(
             login=login,
             password=password,
@@ -17,31 +14,36 @@ class SAMAccountModel(object):
             description=description)
         return account
 
-    def create_acc_from_json(self, acc):
+    @classmethod
+    def create_acc_from_json(cls, acc):
         login = acc['login']
         password = base64.b64decode(acc['password']).decode('utf-8')
         steamlink = acc['steamlink']
         description = acc['description']
-        account = self.create_acc(login, password, steamlink, description)
+        account = cls.create_acc(login, password, steamlink, description)
         return account
 
-    def create_new_acc(self, login, password, steamlink, description):
-        account = self.create_acc(login, password, steamlink, description)
-        self.write_acc(account)
+    @classmethod
+    def create_new_acc(cls, login, password, steamlink, description):
+        account = cls.create_acc(login, password, steamlink, description)
+        cls.write_acc(account)
         return account
 
-    def take_accs(self):
-        accs = self.sam_json.read_json()
+    @classmethod
+    def take_accs(cls):
+        accs = SAMJson.read_json()
         accounts = []
         for acc in accs:
-            accounts.append(self.create_acc_from_json(acc))
+            accounts.append(cls.create_acc_from_json(acc))
         return accounts
 
-    def take_acc(self, key):
-        acc = self.find_acc(key)
-        return self.create_acc_from_json(acc)
+    @classmethod
+    def take_acc(cls, key):
+        acc = cls.find_acc(key)
+        return cls.create_acc_from_json(acc)
 
-    def write_acc(self, acc):
+    @staticmethod
+    def write_acc(acc):
         if acc.login is None or acc.password is None:
             return False
         else:
@@ -51,22 +53,24 @@ class SAMAccountModel(object):
                 'steamlink': acc.steamlink,
                 'description': acc.description,
             }
-            accs = self.sam_json.read_json()
+            accs = SAMJson.read_json()
             accs.append(account)
-            self.sam_json.write_to_json(accs)
+            SAMJson.write_to_json(accs)
             return True
 
-    def delete_acc(self, key):
-        accs = self.sam_json.read_json()
-        accs.remove(self.find_acc(key))
-        self.sam_json.write_to_json(accs)
+    @classmethod
+    def delete_acc(cls, key):
+        accs = SAMJson.read_json()
+        accs.remove(cls.find_acc(key))
+        SAMJson.write_to_json(accs)
 
-    def find_acc(self, data):
+    @staticmethod
+    def find_acc(data):
         if data.find('(') != -1:
             login = data[data.index('(')+1: -1]
         else:
             login = data
-        accs = self.sam_json.read_json()
+        accs = SAMJson.read_json()
         for acc in accs:
             if login in acc.values():
                 return acc

@@ -1,3 +1,4 @@
+# coding=utf-8
 from controllers.controller import Controller
 from controllers.message_controller import MessageController
 from views.editacc_view import EditAccView
@@ -9,7 +10,6 @@ from resourses import strings
 class EditaccController(Controller):
     def __init__(self, model, index, data):
         self.view = EditAccView()
-        self.account_model = SAMAccountModel()
         super(EditaccController, self).__init__(self.view)
         self.index = index
         self.data = data
@@ -30,12 +30,12 @@ class EditaccController(Controller):
             return -1
         newsteamlink = self.view.ui.steamlink_lineEdit.text()
         newdescription = self.view.ui.description_lineEdit.text()
-        self.account_model.delete_acc(login)
+        SAMAccountModel.delete_acc(login)
         self.model.removeRows(self.index)
-        newaccount = self.account_model.create_new_acc(login=login,
-                                                       password=newpassword,
-                                                       steamlink=newsteamlink,
-                                                       description=newdescription)
+        newaccount = SAMAccountModel.create_new_acc(login=login,
+                                                    password=newpassword,
+                                                    steamlink=newsteamlink,
+                                                    description=newdescription)
         self.model.insertRows(self.index, newaccount)
         self.view.close()
 
@@ -43,7 +43,7 @@ class EditaccController(Controller):
         self.view.close()
 
     def fillView(self):
-        acc = self.account_model.take_acc(self.data)
+        acc = SAMAccountModel.take_acc(self.data)
         self.view.ui.login_lineEdit.setText(acc.login)
         self.view.ui.passwrd_lineEdit.setText(acc.password)
         self.view.ui.steamlink_lineEdit.setText(acc.steamlink)

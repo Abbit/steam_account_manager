@@ -1,3 +1,4 @@
+# coding=utf-8
 from resourses import config
 from views.view import View
 from .ui.gen.ui_choice_acc_dialog import Ui_Dialog

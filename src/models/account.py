@@ -1,6 +1,8 @@
+# coding=utf-8
 import base64
 
 from utility.parsingthread import ParsingThread
+from utility.sam_image import SAMImage
 
 
 class Account(object):
@@ -20,8 +22,10 @@ class Account(object):
 
         self._nickname = None
 
-        if steamlink is not None:
+        if self.steamlink is not None:
             self.parse_steamlink()
+        else:
+            SAMImage.get_default_avatar()
 
     @property
     def login(self):

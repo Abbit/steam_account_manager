@@ -1,5 +1,4 @@
-from PyQt5 import QtWidgets
-
+# coding=utf-8
 from views.view import View
 from .ui.gen.ui_editacc_dialog import Ui_Dialog
 

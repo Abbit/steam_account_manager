@@ -1,3 +1,4 @@
+# coding=utf-8
 from controllers.controller import Controller
 from utility.sam_cfg import SAMCfg
 from views.settings_view import SettingsView

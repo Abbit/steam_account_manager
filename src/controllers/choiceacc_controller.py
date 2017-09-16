@@ -1,3 +1,4 @@
+# coding=utf-8
 from controllers.controller import Controller
 from controllers.editacc_controller import EditaccController
 from controllers.message_controller import MessageController
@@ -14,7 +15,6 @@ class ChoiceaccController(Controller):
         self.view = ChoiceAccView(self.model)
         super(ChoiceaccController, self).__init__(self.view)
         self.steamprocess = SteamProcess()
-        self.account_model = SAMAccountModel()
         # Привязка кнопок к функциям
         self.view.ui.choiceAccButton.clicked.connect(self.ChoiceBtnIsClicked)
         self.view.ui.listView.doubleClicked.connect(self.ChoiceBtnIsClicked)
@@ -43,5 +43,5 @@ class ChoiceaccController(Controller):
         message_controller = MessageController('confirm', confirm_message)
         btnvalue = message_controller.view.exec_()
         if btnvalue == 1:
-            self.account_model.delete_acc(self.take_data())
+            SAMAccountModel.delete_acc(self.take_data())
             self.model.removeRows(self.take_index())

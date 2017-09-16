@@ -1,3 +1,4 @@
+# coding=utf-8
 from controllers.controller import Controller
 from controllers.message_controller import MessageController
 from views.addacc_view import AddAccView

@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 from threading import Thread
 
@@ -22,7 +23,7 @@ class ParsingThread(Thread):
     def get_html(self, url):
         try:
             r = requests.get(url, timeout=config.TIMEOUT_TIME)
-        except Exception:
+        except:
             return False
         html = r.content
         return html

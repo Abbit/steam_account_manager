@@ -1,9 +1,12 @@
+# coding=utf-8
 from PyQt5 import QtCore, QtGui
 
 
 class AccountListModel(QtCore.QAbstractListModel):
-    def __init__(self, accounts=[], parent=None):
+    def __init__(self, accounts=None, parent=None):
         super(AccountListModel, self).__init__(parent)
+        if accounts is None:
+            accounts = []
         self.__accounts = accounts
 
     @property

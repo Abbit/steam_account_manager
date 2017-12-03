@@ -6,12 +6,15 @@ from utility.sam_json import SAMJson
 
 class SAMAccountModel(object):
     @staticmethod
-    def create_acc(login, password, steamlink, description):
+    def create_acc(login, password, steamlink, description, steamid="", avatar_url=""):
         account = Account(
             login=login,
             password=password,
             steamlink=steamlink,
-            description=description)
+            description=description,
+            steamid=steamid,
+            avatar_url=avatar_url
+        )
         return account
 
     @classmethod
@@ -20,7 +23,9 @@ class SAMAccountModel(object):
         password = base64.b64decode(acc['password']).decode('utf-8')
         steamlink = acc['steamlink']
         description = acc['description']
-        account = cls.create_acc(login, password, steamlink, description)
+        steamid = acc['steamid']
+        avatar_url = acc['avatar_url']
+        account = cls.create_acc(login, password, steamlink, description, steamid, avatar_url)
         return account
 
     @classmethod
@@ -52,6 +57,8 @@ class SAMAccountModel(object):
                 'password': base64.b64encode(bytes(acc.password, 'utf-8')).decode('utf-8'),
                 'steamlink': acc.steamlink,
                 'description': acc.description,
+                'steamid': acc.steamid,
+                'avatar_url': acc.avatar_url
             }
             accs = SAMJson.read_json()
             accs.append(account)

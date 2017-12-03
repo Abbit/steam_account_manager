@@ -18,7 +18,7 @@ src/view/ui/gen/__pycache__/
 # Ignore avatars
 /src/avatars/
 
-/venv/
+/.venv/
 
 /.vscode/
 /pyinstaller/
@@ -26,3 +26,33 @@ src/view/ui/gen/__pycache__/
 /src/views/ui/main_window_old.ui
 /src/views/ui/gen/main_window_old.py
 /assets/
+src/controllers/__pycache__/addacc_controller.cpython-36.pyc
+src/controllers/__pycache__/choiceacc_controller.cpython-36.pyc
+src/controllers/__pycache__/controller.cpython-36.pyc
+src/controllers/__pycache__/editacc_controller.cpython-36.pyc
+src/controllers/__pycache__/main_contoller.cpython-36.pyc
+src/controllers/__pycache__/message_controller.cpython-36.pyc
+src/controllers/__pycache__/settings_controller.cpython-36.pyc
+src/resourses/__pycache__/
+src/tests/
+src/utility/__pycache__/parsingthread.cpython-36.pyc
+src/utility/__pycache__/sam_cfg.cpython-36.pyc
+src/utility/__pycache__/sam_image.cpython-36.pyc
+src/utility/__pycache__/sam_json.cpython-36.pyc
+src/utility/__pycache__/steamprocess.cpython-36.pyc
+src/views/__pycache__/addacc_view.cpython-36.pyc
+src/views/__pycache__/choiceacc_view.cpython-36.pyc
+src/views/__pycache__/editacc_view.cpython-36.pyc
+src/views/__pycache__/loading_view.cpython-36.pyc
+src/views/__pycache__/main_view.cpython-36.pyc
+src/views/__pycache__/message_view.cpython-36.pyc
+src/views/__pycache__/settings_view.cpython-36.pyc
+src/views/__pycache__/view.cpython-36.pyc
+src/views/ui/gen/__pycache__/main_window_old.cpython-36.pyc
+src/views/ui/gen/__pycache__/ui_addacc_dialog.cpython-36.pyc
+src/views/ui/gen/__pycache__/ui_choice_acc_dialog.cpython-36.pyc
+src/views/ui/gen/__pycache__/ui_confirm_dialog.cpython-36.pyc
+src/views/ui/gen/__pycache__/ui_editacc_dialog.cpython-36.pyc
+src/views/ui/gen/__pycache__/ui_error_dialog.cpython-36.pyc
+src/views/ui/gen/__pycache__/ui_main_window.cpython-36.pyc
+src/views/ui/gen/__pycache__/ui_settings_dialog.cpython-36.pyc

@@ -16,27 +16,39 @@ class ParsingThread(Thread):
         self.account = acc
 
     def run(self):
-        html = self.get_html(self.account.steamlink)
-        self.account.nickname = self.get_nickname(html)
-        self.get_avatar(html)
+        self.account.steamid = self.get_steamid()
+        summaries = self.get_steam_summaries(self.account.steamid)
+        self.account.nickname = self.get_nickname(summaries)
+        self.account.avatar_url = self.get_avatar(summaries)
 
-    def get_html(self, url):
+    def get_steamid(self):
+        if self.account.steamid is not None:
+            return self.account.steamid
+        elif self.account.steamlink.split('/')[-2] == 'profiles':
+            return self.account.steamlink.split('/')[-1]
+        else:
+            try:
+                r = requests.get(config.STEAM_API_GET_STEAMID.format(self.account.steamlink.split('/')[-1]), timeout=config.TIMEOUT_TIME)
+            except:
+                return None
+            response = r.json()
+            if response['response']['success'] == 1:
+                return response['response']['steamid']
+            else:
+                return None
+
+    def get_steam_summaries(self, steamid):
         try:
-            r = requests.get(url, timeout=config.TIMEOUT_TIME)
+            r = requests.get(config.STEAM_API_GET_SUMMARIES.format(steamid), timeout=config.TIMEOUT_TIME)
         except:
             return False
-        html = r.content
-        return html
+        response = r.json()
+        return response['response']['players'][0]
 
-    def get_nickname(self, html):
-        soup = BeautifulSoup(html, 'lxml')
-        nickname = soup.find('span', class_='actual_persona_name').text
-        return nickname
+    def get_nickname(self, summaries):
+        return summaries['personaname']
 
-    def get_avatar(self, html):
-        if os.path.exists('avatars/{0}.jpg'.format(self.account.login)):
-            return 'avatars/{0}.jpg'.format(self.account.login)
-        soup = BeautifulSoup(html, 'lxml')
-        imagelink = soup.find('div', class_='playerAvatarAutoSizeInner').find('img')['src']
-        imagepath = self.sam_image.download_avatar(self.get_html(imagelink), self.account.login)
-        return imagepath
+    def get_avatar(self, summaries):
+        if summaries['avatarmedium'] != self.account.avatar_url:
+            imagepath = self.sam_image.download_avatar(summaries['avatarmedium'], self.account.login)
+        return summaries['avatarmedium']

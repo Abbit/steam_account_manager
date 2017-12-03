@@ -19,19 +19,12 @@ class SAMImage:
         return imagepath
 
     @classmethod
-    def download_avatar(cls, data, imagename):
+    def download_avatar(cls, url, imagename):
         if not os.path.exists('avatars/'):
             os.mkdir('avatars/')
+        data = requests.get(url).content
         imagepath = config.IMAGE_PATH.format(imagename)
         out = open(imagepath, "wb")
         out.write(data)
         out.close()
-        cls.resize_image(imagepath)
         return imagepath
-
-    @staticmethod
-    def resize_image(imagepath):
-        img = Image.open(imagepath)
-        avatar_size = config.AVATAR_SIZE
-        resized_img = img.resize(avatar_size, Image.ANTIALIAS)
-        resized_img.save(imagepath)

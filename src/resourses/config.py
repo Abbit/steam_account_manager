@@ -19,3 +19,9 @@ LISTVIEW_SPACING = 3
 AVATAR_SIZE = (64, 64)
 
 IMAGE_PATH = 'avatars/{}.jpg'
+
+STEAM_API_KEY = '9AC22DCF0B280FF82FF45BAF9CA70CD3'
+
+STEAM_API_GET_STEAMID = 'http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=' + STEAM_API_KEY + '&vanityurl={}'
+
+STEAM_API_GET_SUMMARIES = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=' + STEAM_API_KEY + '&steamids={}'

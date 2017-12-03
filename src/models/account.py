@@ -6,7 +6,7 @@ from utility.sam_image import SAMImage
 
 
 class Account(object):
-    def __init__(self, login, password, steamlink, description):
+    def __init__(self, login, password, steamlink, description, steamid, avatar_url):
         self._login = login
         self._password = password
 
@@ -21,6 +21,16 @@ class Account(object):
             self._description = description
 
         self._nickname = None
+
+        if steamid is "":
+            self._steamid = None
+        else:
+            self._steamid = steamid
+
+        if avatar_url is "":
+            self._avatar_url = None
+        else:
+            self._avatar_url = avatar_url
 
         if self.steamlink is not None:
             self.parse_steamlink()
@@ -50,6 +60,14 @@ class Account(object):
         else:
             return self._login
 
+    @property
+    def steamid(self):
+        return self._steamid
+
+    @property
+    def avatar_url(self):
+        return self._avatar_url
+
     @login.setter
     def login(self, value):
         self._login = value
@@ -69,6 +87,14 @@ class Account(object):
     @description.setter
     def description(self, value):
         self._description = value
+
+    @steamid.setter
+    def steamid(self, value):
+        self._steamid = value
+
+    @avatar_url.setter
+    def avatar_url(self, value):
+        self._avatar_url = value
 
     def parse_steamlink(self):
         parsing_thread = ParsingThread(self)
